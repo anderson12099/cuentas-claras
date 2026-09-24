@@ -17,10 +17,14 @@ interface FormFieldProps {
 export function FormField({ id, label, error, description, children }: FormFieldProps) {
   return (
     <Field data-invalid={error ? true : undefined}>
-      <FieldLabel htmlFor={id}>{label}</FieldLabel>
+      <FieldLabel htmlFor={id} className={error ? "text-destructive" : undefined}>
+        {label}
+      </FieldLabel>
       {children}
       {description && !error && <FieldDescription>{description}</FieldDescription>}
-      {error && <FieldError errors={[{ message: error }]} />}
+      {error && (
+        <FieldError errors={[{ message: error }]} className="font-medium text-destructive" />
+      )}
     </Field>
   );
 }

@@ -47,6 +47,11 @@
   --color-warning-foreground: var(--warning-foreground);
   --color-info: var(--info);
   --color-info-foreground: var(--info-foreground);
+  --color-brand-gradient-from: var(--brand-gradient-from);
+  --color-brand-gradient-via: var(--brand-gradient-via);
+  --color-brand-gradient-to: var(--brand-gradient-to);
+  --color-brand-gradient-glow: var(--brand-gradient-glow);
+  --color-brand-gradient-foreground: var(--brand-gradient-foreground);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -90,6 +95,15 @@
   --warning-foreground: oklch(0.28 0.08 80);
   --info: oklch(0.58 0.14 240);
   --info-foreground: oklch(0.985 0 0);
+
+  /* Gradiente de marca — panel de bienvenida en login/registro. Es
+     deliberadamente independiente del modo claro/oscuro de la app (igual
+     que un panel de hero de marca): mismo valor en :root y .dark. */
+  --brand-gradient-from: oklch(0.26 0.07 215);
+  --brand-gradient-via: oklch(0.38 0.1 197);
+  --brand-gradient-to: oklch(0.55 0.13 178);
+  --brand-gradient-glow: oklch(0.78 0.12 175 / 35%);
+  --brand-gradient-foreground: oklch(0.985 0 0);
 
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);

@@ -1,26 +1,35 @@
 "use client";
 
 import * as React from "react";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Lock } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { authMessages } from "@/config/messages";
 
-type PasswordInputProps = React.ComponentProps<typeof Input>;
+type PasswordInputProps = React.ComponentProps<typeof Input> & {
+  invalid?: boolean;
+};
 
 /**
- * Input de contraseña con toggle mostrar/ocultar. Encapsula el estado del
- * toggle para que ningún formulario tenga que reimplementarlo.
+ * Input de contraseña: ícono de candado a la izquierda (mismo patrón que
+ * IconInput) y toggle mostrar/ocultar a la derecha. No se combina con el
+ * ícono de alerta de IconInput porque el toggle ya ocupa ese espacio — el
+ * error se refuerza con el borde rojo y el mensaje debajo.
  */
-export function PasswordInput({ className, ...props }: PasswordInputProps) {
+export function PasswordInput({ className, invalid, ...props }: PasswordInputProps) {
   const [visible, setVisible] = React.useState(false);
 
   return (
     <div className="relative">
+      <Lock
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-y-0 left-0 my-auto ml-3 size-4 text-muted-foreground"
+      />
       <Input
         {...props}
+        aria-invalid={invalid}
         type={visible ? "text" : "password"}
-        className={cn("pr-10", className)}
+        className={cn("pl-9 pr-10", className)}
       />
       <button
         type="button"

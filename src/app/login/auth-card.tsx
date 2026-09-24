@@ -11,9 +11,10 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import { User, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { FormField } from "@/components/forms/form-field";
+import { IconInput } from "@/components/forms/icon-input";
 import { PasswordInput } from "@/components/forms/password-input";
 import { SecurityNotice } from "@/components/ui/security-notice";
 import { Logo } from "@/components/brand/logo";
@@ -105,7 +106,7 @@ export function AuthCard({ initialMode, serverError, notice }: AuthCardProps) {
   return (
     <Card className="w-full max-w-sm">
       <CardHeader className="items-center text-center">
-        <Logo className="mb-2" />
+        <Logo className="mb-2 md:hidden" />
         <CardTitle>{copy.title}</CardTitle>
         <CardDescription>{copy.subtitle}</CardDescription>
       </CardHeader>
@@ -124,12 +125,13 @@ export function AuthCard({ initialMode, serverError, notice }: AuthCardProps) {
                 !errors.nombre ? authMessages.fields.nombre.description : undefined
               }
             >
-              <Input
+              <IconInput
+                icon={<User className="size-4" />}
                 id="nombre"
                 type="text"
                 autoComplete="name"
                 placeholder={authMessages.fields.nombre.placeholder}
-                aria-invalid={!!errors.nombre}
+                invalid={!!errors.nombre}
                 {...form.register("nombre")}
               />
             </FormField>
@@ -140,12 +142,13 @@ export function AuthCard({ initialMode, serverError, notice }: AuthCardProps) {
             label={authMessages.fields.email.label}
             error={errors.email?.message}
           >
-            <Input
+            <IconInput
+              icon={<Mail className="size-4" />}
               id="email"
               type="email"
               autoComplete="email"
               placeholder={authMessages.fields.email.placeholder}
-              aria-invalid={!!errors.email}
+              invalid={!!errors.email}
               {...form.register("email")}
             />
           </FormField>
@@ -159,7 +162,7 @@ export function AuthCard({ initialMode, serverError, notice }: AuthCardProps) {
               id="password"
               autoComplete={mode === "login" ? "current-password" : "new-password"}
               placeholder={authMessages.fields.password.placeholder}
-              aria-invalid={!!errors.password}
+              invalid={!!errors.password}
               {...form.register("password")}
             />
           </FormField>
