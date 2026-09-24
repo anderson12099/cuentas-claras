@@ -98,7 +98,7 @@ actualizan de forma incremental — no es necesario llenarlos todos de una sola 
 | `docs/05-requisitos-funcionales.md` | Especificación por módulo: auth, dashboard, movimientos, categorías, deudas, préstamos, moto, ahorros, recurrentes, reportes | ⏳ Pendiente |
 | `docs/06-requisitos-no-funcionales.md` | Seguridad, rendimiento, mantenibilidad, disponibilidad/recuperación (con métricas objetivo) | ⏳ Pendiente |
 | `docs/07-arquitectura-tecnologica.md` | 2-3 alternativas tecnológicas comparadas + arquitectura del sistema recomendada (diagramas, flujos) | ⏳ Pendiente |
-| `docs/08-modelo-datos.md` | Entidades, campos, relaciones, índices, restricciones, esquema y migraciones iniciales | ⏳ Pendiente |
+| `docs/08-modelo-datos.md` | Entidades, campos, relaciones, índices, restricciones, esquema y migraciones iniciales | ✅ Cerrada |
 | `docs/09-experiencia-usuario.md` | Flujo de registro rápido de gasto, pantallas principales, navegación, estados vacíos/carga/error, accesibilidad | ⏳ Pendiente |
 | `docs/10-migracion-excel.md` | Proceso de carga, validación, mapeo, detección de duplicados/errores, importación transaccional | ⏳ Pendiente (depende de 01) |
 | `docs/11-tiempo-real-sincronizacion.md` | Qué significa "tiempo real" aquí, estrategia de sync, idempotencia, resolución de conflictos | ⏳ Pendiente |
@@ -179,6 +179,25 @@ actualizan de forma incremental — no es necesario llenarlos todos de una sola 
   app). La lógica de recálculo de amortización (abonos a capital) va en **Edge Functions**.
   Diagramas de contexto, contenedores, componentes y los 8 flujos pedidos ya están en Mermaid
   dentro del documento.
-- **Siguiente paso recomendado**: `08-modelo-datos.md` (Fase 8) — ya puede detallarse con la
-  arquitectura elegida (Postgres/Supabase, RLS por titular) y los 26 casos de uso de
-  `04-casos-de-uso.md` (25 + el caso 0 de titulares) como insumo directo.
+- **Fase 8 — Modelo de datos**: cerrada (2026-09-13) en `docs/08-modelo-datos.md`. Define
+  `Titular` como unidad de aislamiento (referenciada desde `Account`, `Transaction`, `Debt`/
+  `DebtPayment`, `Loan`/`LoanPayment`, `Motorcycle`/`MotorcyclePayment`, `SavingsGoal`/
+  `SavingsContribution`, `RecurringExpense`, `Activity*`, `Reminder`/`Notification`); `Category`
+  compartida entre titulares (mismo supuesto de Fase 4, aún a confirmar); anulación lógica en vez
+  de borrado físico en todas las tablas financieras; `AuditLog` polimórfico único vía triggers de
+  base de datos (no depende de que el frontend recuerde llamarlo); `MotorcyclePayment` incluye
+  los campos de abono a capital con snapshot de saldo antes/después y recálculo de plazo (no de
+  cuota, confirmado por el usuario). Se generaron: especificación completa de las ~17 entidades,
+  DDL SQL de las tablas núcleo, vistas `account_balance` y `titular_dashboard` (el saldo se
+  calcula siempre en estas vistas de backend, nunca en frontend), ejemplo de política RLS por
+  `titular_id` (`titular_owns_transaction`), y la tabla de mapeo Excel→BD actualizada con
+  atribución de titular por hoja (algunas hojas — Deudas Bancos, Deuda casa, Pagos Cuota Casa,
+  Deuda/Cuaderno de pérdidas Nita — quedan marcadas "a confirmar" con el usuario). Pendiente de
+  confirmar con el usuario: fórmula exacta de disponible/comprometido/patrimonio neto (abierto
+  desde Fase 3, caso 17); a cuál titular pertenecen las hojas ambiguas del Excel. Con esto se
+  cierra el bloque completo **Fases 0-8** que `CLAUDE.md` regla 1 exige antes de escribir código
+  de producto.
+- **Siguiente paso recomendado**: `09-experiencia-usuario.md` (Fase 9) — flujo de registro
+  rápido de gasto (<10s, la interacción más importante del producto), pantallas principales,
+  navegación, estados vacíos/carga/error y accesibilidad, ya con el modelo de datos y la
+  arquitectura Supabase/RLS como restricciones concretas de diseño.
